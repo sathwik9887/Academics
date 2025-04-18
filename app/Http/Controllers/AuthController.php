@@ -28,16 +28,26 @@ class AuthController extends Controller
 
     $remember = $request->has('remember_token');
 
-    if (Auth::guard('web')->attempt($credentials, $remember)) {
 
-        event(new UserLoggedIn(Auth::user()));
+    if (Auth::guard('web')->validate($credentials)) {
+        $user = User::where('email', $credentials['email'])->first();
 
-        $request->session()->regenerate();
-        return redirect()->route('home')->with('success', 'You have been logged in');
+
+        if ($user->status === 'INACTIVE') {
+            return redirect()->back()->withErrors(['email' => 'Your account is inactive.']);
+        }
+
+
+        if (Auth::guard('web')->attempt($credentials, $remember)) {
+            event(new UserLoggedIn(Auth::user()));
+            $request->session()->regenerate();
+            return redirect()->route('home')->with('success', 'You have been logged in');
+        }
     }
 
     return redirect()->back()->withErrors(['email' => 'Invalid credentials']);
-    }
+}
+
 
     public function register()
     {

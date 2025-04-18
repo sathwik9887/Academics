@@ -93,9 +93,10 @@
                     </h2>
                 </div>
             </div>
-            @foreach ($teachers as $teacher )
-            @if($teacher->status == "ACTIVE")
+
             <div class="row">
+                @foreach ($teachers as $teacher)
+                @if($teacher->status == "ACTIVE")
                 <div class="col-lg-4 col-md-6 mb-5 mb-lg-5">
                     <div class="feature-1 border person text-center">
                         <img src="{{ asset('storage/' . $teacher->image) }}" alt="Image" class="img-fluid">
@@ -106,9 +107,9 @@
                         </div>
                     </div>
                 </div>
+                @endif
+                @endforeach
             </div>
-            @endif
-            @endforeach
         </div>
     </div>
 

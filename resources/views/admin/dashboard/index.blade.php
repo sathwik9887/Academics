@@ -35,8 +35,8 @@
                 <!--begin::Small Box Widget 1-->
                 <div class="small-box text-bg-primary">
                     <div class="inner">
-                        <h3>{{ $newOrdersCount }}</h3>
-                        <p>New Orders</p>
+                        <h3>33</h3>
+                        <p>New Order(s)</p>
                     </div>
                     <svg class="small-box-icon" fill="currentColor" viewBox="0 0 24 24"
                         xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -56,16 +56,15 @@
                 <!--begin::Small Box Widget 2-->
                 <div class="small-box text-bg-success">
                     <div class="inner">
-                        <h3>53<sup class="fs-5">%</sup></h3>
-                        <p>Bounce Rate</p>
+                        <h3>{{ $newCourses }}</h3>
+                        <p>Course(s)</p>
                     </div>
                     <svg class="small-box-icon" fill="currentColor" viewBox="0 0 24 24"
                         xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                         <path
-                            d="M18.375 2.25c-1.035 0-1.875.84-1.875 1.875v15.75c0 1.035.84 1.875 1.875 1.875h.75c1.035 0 1.875-.84 1.875-1.875V4.125c0-1.036-.84-1.875-1.875-1.875h-.75zM9.75 8.625c0-1.036.84-1.875 1.875-1.875h.75c1.036 0 1.875.84 1.875 1.875v11.25c0 1.035-.84 1.875-1.875 1.875h-.75a1.875 1.875 0 01-1.875-1.875V8.625zM3 13.125c0-1.036.84-1.875 1.875-1.875h.75c1.036 0 1.875.84 1.875 1.875v6.75c0 1.035-.84 1.875-1.875 1.875h-.75A1.875 1.875 0 013 19.875v-6.75z">
-                        </path>
+                            d="M12 2L1 7l11 5 9-4.09V17h2V7L12 2zM4.21 10.47L3 11.03v2.19c0 2.5 3.33 4.3 9 4.77 5.67-.47 9-2.27 9-4.77v-2.19l-1.21-.56c-.9.62-2.34 1.19-4.08 1.63-1.36.33-2.89.51-4.71.51s-3.35-.18-4.71-.51c-1.74-.44-3.18-1.01-4.08-1.63z" />
                     </svg>
-                    <a href="#"
+                    <a href="{{ route('admin.courses') }}"
                         class="small-box-footer link-light link-underline-opacity-0 link-underline-opacity-50-hover">
                         More info <i class="bi bi-link-45deg"></i>
                     </a>
@@ -78,7 +77,7 @@
                 <div class="small-box text-bg-warning">
                     <div class="inner">
                         <h3>{{ $userCount }}</h3>
-                        <p>User Registrations</p>
+                        <p>User Registration(s)</p>
                     </div>
                     <svg class="small-box-icon" fill="currentColor" viewBox="0 0 24 24"
                         xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -98,19 +97,15 @@
                 <!--begin::Small Box Widget 4-->
                 <div class="small-box text-bg-danger">
                     <div class="inner">
-                        <h3>65</h3>
-                        <p>Unique Visitors</p>
+                        <h3>{{ $newTeachers }}</h3>
+                        <p>Teacher(s)</p>
                     </div>
                     <svg class="small-box-icon" fill="currentColor" viewBox="0 0 24 24"
                         xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                        <path clip-rule="evenodd" fill-rule="evenodd"
-                            d="M2.25 13.5a8.25 8.25 0 018.25-8.25.75.75 0 01.75.75v6.75H18a.75.75 0 01.75.75 8.25 8.25 0 01-16.5 0z">
-                        </path>
-                        <path clip-rule="evenodd" fill-rule="evenodd"
-                            d="M12.75 3a.75.75 0 01.75-.75 8.25 8.25 0 018.25 8.25.75.75 0 01-.75.75h-7.5a.75.75 0 01-.75-.75V3z">
-                        </path>
+                        <path
+                            d="M12 12c2.21 0 4-1.79 4-4S14.21 4 12 4s-4 1.79-4 4 1.79 4 4 4Zm6 2h-2.18A3.001 3.001 0 0 1 12 13a3.001 3.001 0 0 1-3.82 1H6c-1.1 0-2 .9-2 2v3a1 1 0 1 0 2 0v-2h12v2a1 1 0 1 0 2 0v-3c0-1.1-.9-2-2-2Z" />
                     </svg>
-                    <a href="#"
+                    <a href="{{ route('admin.teachers') }}"
                         class="small-box-footer link-light link-underline-opacity-0 link-underline-opacity-50-hover">
                         More info <i class="bi bi-link-45deg"></i>
                     </a>
@@ -144,5 +139,58 @@
     <!--end::Container-->
 </div>
 <!--end::App Content-->
+
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+<script>
+    const chartData = @json($chartData);
+
+    const sales_chart_options = {
+        series: chartData.series,
+        chart: {
+            height: 300,
+            type: 'area',
+            toolbar: {
+                show: true,
+            },
+        },
+        legend: {
+            show: true,
+            position: 'top',
+        },
+        colors: ['#0d6efd', '#20c997', '#ffc107', '#dc3545'],
+        dataLabels: {
+            enabled: false,
+        },
+        stroke: {
+            curve: 'smooth',
+            width: 2,
+        },
+        xaxis: {
+            type: 'datetime',
+            categories: chartData.categories,
+            labels: {
+                format: 'MMM yyyy',
+            },
+        },
+        tooltip: {
+            x: {
+                format: 'MMMM yyyy',
+            },
+        },
+        grid: {
+            borderColor: '#e7e7e7',
+            row: {
+                colors: ['#f3f3f3', 'transparent'],
+                opacity: 0.5,
+            },
+        },
+    };
+
+    const sales_chart = new ApexCharts(
+        document.querySelector('#revenue-chart'),
+        sales_chart_options
+    );
+    sales_chart.render();
+</script>
 
 @endsection

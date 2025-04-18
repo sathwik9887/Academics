@@ -93,6 +93,8 @@ Route::get('/admin/philosophy/destroy{id}', [PhilosophyController::class, 'destr
 
 Route::get('/admin/users', [UserController::class, 'index'])->name('admin.users');
 Route::get('/admin/users/show{id}', [UserController::class, 'show'])->name('admin.users.show');
+Route::get('/admin/users/edit{id}', [UserController::class, 'edit'])->name('admin.users.edit');
+Route::post('/admin/users/{id}', [UserController::class, 'update'])->name('admin.users.update');
 
 Route::get('/admin/newsletter', [NewsletterController::class, 'index'])->name('admin.newsletter');
 Route::get('/admin/newsletter/show{id}', [NewsletterController::class, 'show'])->name('admin.newsletter.show');

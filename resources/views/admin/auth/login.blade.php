@@ -40,6 +40,9 @@
                 <a href="{{route('admin.auth.login')}}"
                     class="link-dark text-center link-offset-2 link-opacity-100 link-opacity-50-hover">
                     <h1 class="mb-0"><b>Academics</b> Admin</h1>
+                    <div class="d-flex align-items-center justify-content-center">
+                        <img src="{{asset('admin/assets/img/AdminLTELogo.png')}}" alt="AdminLTE Logo" width="50">
+                    </div>
                 </a>
             </div>
             <div class="card-body login-card-body">
@@ -72,11 +75,13 @@
                     </div>
                     <div class="input-group mb-1">
                         <div class="form-floating">
-                            <input type="password" class="form-control" name="password" value="{{ old('password') }}"
-                                placeholder="Enter the Password" required />
+                            <input type="password" class="form-control" id="password" name="password"
+                                value="{{ old('password') }}" placeholder="Enter the Password" required />
                             <label for="password">Password</label>
                         </div>
-                        <div class="input-group-text"><span class="bi bi-lock-fill"></span></div>
+                        <div class="input-group-text" onclick="togglePassword()">
+                            <span id="eye-icon" class="bi bi-eye-fill"></span>
+                        </div>
                     </div>
                     <!--begin::Row-->
                     <div class="row">
@@ -121,6 +126,22 @@
     <!--end::Required Plugin(AdminLTE)-->
     <!--begin::OverlayScrollbars Configure-->
     <!--end::OverlayScrollbars Configure-->
+    <script>
+        function togglePassword() {
+            var passwordInput = document.getElementById('password');
+            var eyeIcon = document.getElementById('eye-icon');
+
+            if (passwordInput.type === "password") {
+                passwordInput.type = "text";
+                eyeIcon.classList.remove("bi-eye-fill");
+                eyeIcon.classList.add("bi-eye-slash-fill");
+            } else {
+                passwordInput.type = "password";
+                eyeIcon.classList.remove("bi-eye-slash-fill");
+                eyeIcon.classList.add("bi-eye-fill");
+            }
+        }
+    </script>
     <!--end::Script-->
 </body>
 <!--end::Body-->

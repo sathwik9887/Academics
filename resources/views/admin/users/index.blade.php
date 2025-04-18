@@ -46,6 +46,7 @@
                             <th>User ID</th>
                             <th>User Name</th>
                             <th>Email Address</th>
+                            <th>Status</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -56,8 +57,17 @@
                             <td>{{ $user->name }}</td>
                             <td>{{ $user->email }}</td>
                             <td>
+                                @if($user->status === "ACTIVE")
+                                <span class="badge rounded-pill bg-success text-white">ACTIVE</span>
+                                @else
+                                <span class="badge rounded-pill bg-danger text-white">INACTIVE</span>
+                                @endif
+                            </td>
+                            <td>
                                 <a href="{{ route('admin.users.show', $user->id) }}"
                                     class="btn btn-info btn-sm">View</a>
+                                <a href="{{ route('admin.users.edit', $user->id) }}"
+                                    class="btn btn-warning btn-sm">Edit</a>
                             </td>
                         </tr>
                         @empty

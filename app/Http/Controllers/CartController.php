@@ -37,6 +37,8 @@ class CartController extends Controller
 
         $cartItems = $cart ? $cart->items : collect();
 
+        // dd($cartItems);
+
         return view('cart.index', compact('cartItems'));
     }
 
@@ -47,58 +49,49 @@ class CartController extends Controller
      * @return \Illuminate\Http\JsonResponse
      */
     public function addToCart(Request $request)
-{
-
-    $request->validate([
-        'course_id' => 'required|exists:courses,id',
-        'price' => 'required|numeric',
-        'quantity' => 'nullable|integer|min:1'
-    ]);
-
-
-    $course_id = $request->input('course_id');
-    $price = $request->input('price');
-    $quantity = $request->input('quantity', 1);
-
-
-    $session_id = session()->getId();
-
-
-    $user_id = Auth::check() ? Auth::id() : null;
-
-
-    if ($user_id) {
-        $cart = Cart::firstOrCreate([
-            'user_id' => $user_id,
-            'session_id' => null,
+    {
+        $request->validate([
+            'course_id' => 'required|exists:courses,id',
+            'price' => 'required|numeric',
+            'quantity' => 'nullable|integer|min:1'
         ]);
-    } else {
 
-        $cart = Cart::firstOrCreate([
-            'user_id' => null,
-            'session_id' => $session_id,
-        ]);
-    }
+        $course_id = $request->input('course_id');
+        $price = $request->input('price');
+        $quantity = $request->input('quantity', 1);
 
-
-    if ($user_id && session()->has('merged_guest_cart') && !session('merged_guest_cart')) {
-        $guestCart = Cart::where('session_id', $session_id)->first();
-
-        if ($guestCart) {
-            foreach ($guestCart->items as $guestItem) {
-                CartItem::updateOrCreate(
-                    ['cart_id' => $cart->id, 'course_id' => $guestItem->course_id],
-                    ['quantity' => $guestItem->quantity, 'price' => $guestItem->price]
-                );
-            }
+        $session_id = session()->getId();
+        $user_id = Auth::check() ? Auth::id() : null;
 
 
-            session(['merged_guest_cart' => true]);
-
-
-            $guestCart->delete();
+        if ($user_id) {
+            $cart = Cart::firstOrCreate([
+                'user_id' => $user_id,
+                'session_id' => null,
+            ]);
+        } else {
+            $cart = Cart::firstOrCreate([
+                'user_id' => null,
+                'session_id' => $session_id,
+            ]);
         }
-    }
+
+
+        if ($user_id && session()->has('merged_guest_cart') && !session('merged_guest_cart')) {
+            $guestCart = Cart::where('session_id', $session_id)->first();
+
+            if ($guestCart) {
+                foreach ($guestCart->items as $guestItem) {
+                    CartItem::updateOrCreate(
+                        ['cart_id' => $cart->id, 'course_id' => $guestItem->course_id],
+                        ['quantity' => $guestItem->quantity, 'price' => $guestItem->price]
+                    );
+                }
+
+                session(['merged_guest_cart' => true]);
+                $guestCart->delete();
+            }
+        }
 
 
     $cartItem = CartItem::where('cart_id', $cart->id)->where('course_id', $course_id)->first();
@@ -117,10 +110,9 @@ class CartController extends Controller
         ]);
     }
 
-
     return redirect()->back()->with('success', 'Course added to cart successfully');
-
 }
+
 
 public function removeFromCart($cartItemId)
 {

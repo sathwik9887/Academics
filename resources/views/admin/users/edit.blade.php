@@ -1,5 +1,5 @@
 @extends('admin.layouts.app')
-@section('title', 'Academics Admin | Teachers | View')
+@section('title', 'Academics Admin | Users | View')
 @section('content')
 <div class="app-content-header">
     <div class="container-fluid">
@@ -34,7 +34,8 @@
                         </div>
                         @endif
                         <div class="card-body">
-                            <form method="POST" enctype="multipart/form-data">
+                            <form action="{{ route('admin.users.update', $users->id) }}" method="POST"
+                                enctype="multipart/form-data">
                                 @csrf
                                 <div class="form-group">
                                     <label for="name">User Name</label>
@@ -50,7 +51,7 @@
                                 <br>
                                 <div class="form-group">
                                     <label for="status">Status</label>
-                                    <select name="status" id="status" class="form-control" disabled>
+                                    <select name="status" id="status" class="form-control">
                                         <option value="">Select a Status</option>
                                         <option value="ACTIVE" {{ $users->status == 'ACTIVE' ? 'selected' : ''
                                             }}>ACTIVE
@@ -63,7 +64,7 @@
                                 <br>
 
 
-
+                                <button type="submit" class="btn btn-success">Update</button>
                                 <a href="{{ route('admin.users') }}" class="btn btn-danger">Back</a>
                             </form>
                         </div>
